@@ -1,0 +1,188 @@
+# DLP Policy Configuration Template
+# Version: 1.0
+# Description: Define data protection policies for cross-platform DLP system
+
+policies:
+  # Credit Card Protection Policy
+  - policy:
+      id: PCI-BLOCK
+      description: "Block credit card numbers in network traffic"
+      enabled: true
+      severity: critical
+      patterns:
+        - name: "Credit Card Number"
+          regex: '\b(?:\d[ -]*?){13,16}\b'
+          confidence: high
+          validation:
+            - luhn_check: true
+      conditions:
+        context:
+          - location: ["network", "email", "web_upload"]
+          - exclude_trusted_domains: ["payment.internal.com"]
+      actions:
+        network: block
+        file: quarantine
+        log_severity: critical
+        notification:
+          - email: security@company.com
+          - siem: true
+      apply_to:
+        os: [linux, windows, macos]
+        apps: [email, browsers, messaging]
+        users:
+          exclude: ["payment_processor_group"]
+
+  # SSN Protection Policy
+  - policy:
+      id: PII-SSN-ENCRYPT
+      description: "Encrypt files containing Social Security Numbers"
+      enabled: true
+      severity: high
+      patterns:
+        - name: "SSN Format"
+          regex: '\b\d{3}-\d{2}-\d{4}\b'
+          confidence: high
+        - name: "SSN No Dashes"
+          regex: '\b\d{9}\b'
+          confidence: medium
+          context_required: ["SSN", "social security"]
+      conditions:
+        file_types: [".doc", ".docx", ".xls", ".xlsx", ".pdf", ".txt"]
+        locations:
+          monitor: ["/home", "/Users", "C:\\Users"]
+          exclude: ["/tmp", "/var/tmp", "C:\\Windows\\Temp"]
+      actions:
+        file: encrypt
+        encryption:
+          algorithm: AES-256-GCM
+          key_derivation: PBKDF2
+        backup: true
+        log_severity: high
+      apply_to:
+        os: [linux, windows, macos]
+        min_file_size: 1024  # bytes
+
+  # Intellectual Property Protection
+  - policy:
+      id: IP-SOURCE-CODE
+      description: "Monitor and alert on source code exfiltration"
+      enabled: true
+      severity: high
+      patterns:
+        - name: "Company Copyright"
+          regex: 'Copyright.*YourCompany.*All rights reserved'
+          case_sensitive: false
+        - name: "Proprietary Markers"
+          keywords: ["CONFIDENTIAL", "PROPRIETARY", "INTERNAL USE ONLY"]
+          proximity: 100  # characters
+      conditions:
+        file_types: [".py", ".java", ".cpp", ".go", ".rs", ".js"]
+        network_destinations:
+          block: ["github.com", "gitlab.com", "bitbucket.org"]
+          allow: ["git.internal.com"]
+      actions:
+        network: alert
+        file: 
+          copy: watermark
+          compress: block
+        log_severity: high
+        screenshot: true
+      apply_to:
+        os: [linux, windows, macos]
+        processes: ["git", "scp", "rsync", "ftp"]
+
+  # Healthcare Data (HIPAA)
+  - policy:
+      id: HIPAA-PHI
+      description: "Protect Personal Health Information"
+      enabled: true
+      severity: critical
+      patterns:
+        - name: "Medical Record Number"
+          regex: 'MRN[:|\s]*\d{6,10}'
+        - name: "Health Conditions"
+          keywords: ["diagnosis", "prescription", "medical history"]
+          ml_model: "healthcare_classifier_v2"
+      conditions:
+        require_all_patterns: false
+        confidence_threshold: 0.85
+      actions:
+        network: block
+        file: encrypt
+        print: block
+        clipboard: sanitize
+        log_severity: critical
+      apply_to:
+        os: [linux, windows, macos]
+        apps: ["*"]  # All applications
+
+  # Financial Data Protection
+  - policy:
+      id: FIN-BANK-ACCOUNT
+      description: "Protect bank account information"
+      enabled: true
+      severity: high
+      patterns:
+        - name: "IBAN"
+          regex: '[A-Z]{2}\d{2}[A-Z0-9]{1,30}'
+          validation:
+            - iban_check: true
+        - name: "US Bank Account"
+          regex: '\b\d{9,17}\b'
+          context_required: ["account", "routing", "ABA"]
+      actions:
+        network: 
+          action: inspect
+          ssl_inspection: true
+        file: alert
+        database: mask
+        log_severity: high
+      apply_to:
+        os: [linux, windows, macos]
+        time_windows:
+          - days: ["mon", "tue", "wed", "thu", "fri"]
+            hours: "08:00-18:00"
+            timezone: "UTC"
+
+# Global Settings
+global_settings:
+  policy_update_interval: 300  # seconds
+  agent_heartbeat: 60         # seconds
+  max_file_size_scan: 104857600  # 100MB
+  quarantine_location:
+    linux: "/var/dlp/quarantine"
+    windows: "C:\\ProgramData\\DLP\\Quarantine"
+    macos: "/Library/Application Support/DLP/Quarantine"
+  
+  encryption:
+    key_management:
+      type: "centralized"
+      rotation_days: 90
+      escrow: true
+    
+  performance:
+    cpu_limit: 25  # percentage
+    memory_limit: 512  # MB
+    scan_threads: 4
+    
+  exceptions:
+    processes: ["antivirus.exe", "backup_agent"]
+    users: ["root", "SYSTEM", "dlp_service"]
+    paths:
+      - "/proc"
+      - "/sys"
+      - "C:\\Windows\\System32"
+      - "/System/Library"
+
+# Response Templates
+response_templates:
+  user_notification:
+    title: "DLP Policy Violation"
+    body: "Your action violated policy {policy_id}: {description}"
+    actions_available: ["request_exception", "view_policy", "contact_security"]
+  
+  admin_alert:
+    channels: ["email", "slack", "siem"]
+    format: "json"
+    include_evidence: true
+    max_evidence_size: 10240  # 10KB
