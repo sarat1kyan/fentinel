@@ -554,7 +554,7 @@ graph TD
 We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md) and:
 ```bash
 # Setup dev environment
-git clone https://github.com/your-repo/FENTINEL.git
+git clone https://github.com/sarat1kyan/FENTINEL.git
 cd FENTINEL
 pip install -r requirements-dev.txt
 
@@ -568,4 +568,4 @@ FENTINEL is released under the [MIT License](LICENSE). Enterprise support and ad
 ---
 **Protect what matters.** Deploy FENTINEL in under 5 minutes and gain enterprise-grade DLP protection across your entire organization.  
 
-[📚 Documentation](https://docs.sentinelshield.io) | [📦 Download](https://github.com/your-repo/releases) | [🐛 Report Issue](https://github.com/your-repo/issues)
+[📚 Documentation](https://docs.sentinelshield.io) | [📦 Download](https://github.com/sarat1kyan/releases) | [🐛 Report Issue](https://github.com/sarat1kyan/issues)
