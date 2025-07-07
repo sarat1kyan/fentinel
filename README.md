@@ -79,7 +79,6 @@ I --> K[Audit Reports]
 ## 🏗️ Architecture Overview
 
 FENTINEL follows a modular architecture designed for scalability and flexibility:
-![Microservices Architecture Diagram](./arch.svg)
 
 ### Key Components
 1. **Endpoint Agents**: Lightweight binaries collecting security-relevant events
