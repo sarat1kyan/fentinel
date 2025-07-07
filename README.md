@@ -1,4 +1,5 @@
 # FENTINEL: Universal Data Loss Prevention System 🔒🌐
+
 ```bash
 ███████╗███████╗███╗   ██╗████████╗██╗███╗   ██╗███████╗██╗     
 ██╔════╝██╔════╝████╗  ██║╚══██╔══╝██║████╗  ██║██╔════╝██║     
@@ -7,6 +8,8 @@
 ██║     ███████╗██║ ╚████║   ██║   ██║██║ ╚████║███████╗███████╗
 ╚═╝     ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
 ```
+
+**One Policy. All Platforms. Complete Protection.** FENTINEL is an open-source, cross-platform Data Loss Prevention solution that safeguards sensitive data across Linux, Windows, and macOS environments with military-grade precision.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Category](https://img.shields.io/badge/category-Software-red.svg)](https://github.com/sarat1kyan/Terminus)
@@ -17,460 +20,128 @@
 [![OS](https://img.shields.io/badge/os-Linux%20%7C%20Windows%20%7C%20macOS-blue.svg)](https://www.python.org/downloads/)
 
 
-**One Policy. All Platforms. Complete Protection.** FENTINEL is an open-source, cross-platform Data Loss Prevention solution that safeguards sensitive data across Linux, Windows, and macOS environments with military-grade precision.
+## Table of Contents
+
+- [Why FENTINEL?](#-why-fentinel)
+- [Core Features](#-core-features)
+- [Architecture Overview](#-architecture-overview)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Quick Start Guide](#-quick-start-guide)
+- [Policy Management](#-policy-management)
+- [Detection Capabilities](#%EF%B8%8F-detection-capabilities)
+- [Response Actions](#-response-actions)
+- [Dashboard & Monitoring](#-dashboard--monitoring)
+- [Deployment Scenarios](#-deployment-scenarios)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
 
 ## 🚀 Why FENTINEL?
 
-| Feature | Benefit |
-|---------|---------|
-| 🔄 **Universal Policy Enforcement** | Define once, deploy everywhere - consistent protection across all OS environments |
-| 🔍 **Real-time Data Monitoring** | Monitor data in motion, at rest, and in use with minimal performance impact |
-| 🛡️ **Native OS Integration** | Leverages Windows ETW, macOS EndpointSecurity, and Linux eBPF for maximum efficiency |
-| 📊 **Centralized Management** | Unified dashboard for policy management and incident response |
-| ⚙️ **Automated Response** | Block, encrypt, quarantine, or alert on policy violations |
+FENTINEL provides enterprise-grade data protection without enterprise complexity. Unlike traditional DLP solutions, FENTINEL offers:
+
+- **Universal Policy Enforcement**: Define security policies once and enforce them consistently across all operating systems
+- **Minimal Footprint**: Lightweight agents with average memory consumption under 10MB
+- **Real-time Protection**: Monitor data in motion, at rest, and in use with near-zero latency
+- **Open Architecture**: Extensible plugin system for custom detectors and integrations
+- **Compliance Ready**: Pre-built templates for GDPR, HIPAA, PCI-DSS, and more
 
 ```mermaid
 graph LR
-A[Endpoint Agents] --> B[Policy Engine]
-B --> C[Linux: eBPF/Auditd]
-B --> D[Windows: ETW/WFP]
-B --> E[macOS: EndpointSecurity]
-C & D & E --> F[Central Dashboard]
-F --> G[SIEM Integration]
+A[Endpoint Agents] -->|Events| B(Policy Engine)
+B --> C{Detection Engine}
+C -->|Match| D[Response Module]
+D --> E[Block Network]
+D --> F[Encrypt File]
+D --> G[Quarantine]
+D --> H[Send Alert]
+B --> I[Central Dashboard]
+I --> J[SIEM Systems]
+I --> K[Audit Reports]
 ```
 
-## 🧩 Core Components
+## 🧩 Core Features
 
-1. **Lightweight Agents** - Cross-platform binaries (5MB RAM avg)
-2. **Policy Engine** - YAML/JSON-based rules with regex and ML detection
-3. **Response Module** - Automated encryption, blocking, and quarantine
-4. **Dashboard** - Real-time monitoring and alerting (Web UI)
+| Feature | Linux | Windows | macOS | Description |
+|---------|-------|---------|-------|-------------|
+| **Network Monitoring** | ✅ | ✅ | ✅ | Inspect HTTP/HTTPS, SMTP, FTP, and custom protocols |
+| **File System Guard** | ✅ | ✅ | ✅ | Real-time file operations monitoring with content inspection |
+| **Clipboard Protection** | ✅ | ✅ | ✅ | Prevent sensitive data copying to unauthorized applications |
+| **Print Control** | ✅ | ✅ | ✅ | Restrict printing of sensitive documents |
+| **USB Device Control** | ✅ | ✅ | ✅ | Block or encrypt data transferred to removable media |
+| **Cloud App Control** | ✅ | ✅ | ✅ | Monitor and control data uploaded to cloud services |
+| **Content-Aware DLP** | ✅ | ✅ | ✅ | Regex, ML, and file fingerprinting detection |
+| **Automated Remediation** | ✅ | ✅ | ✅ | Block, encrypt, quarantine, or alert on violations |
+| **Central Management** | ✅ | ✅ | ✅ | Web-based dashboard for policy management and monitoring |
 
-## ⚡ Quick Start
+## 🏗️ Architecture Overview
+
+FENTINEL follows a modular architecture designed for scalability and flexibility:
+![Microservices Architecture Diagram](./arch.svg)
+
+### Key Components
+1. **Endpoint Agents**: Lightweight binaries collecting security-relevant events
+2. **Policy Engine**: Centralized policy management and evaluation
+3. **Detection Engine**: Multiple detection methods working in concert
+4. **Response Engine**: Automated remediation actions
+5. **Management API**: RESTful interface for administration and integration
+6. **Web Dashboard**: Real-time monitoring and historical analysis
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.8+
+
+- Python 3.8+ (for source installation)
 - Root/Admin privileges
 - 100MB disk space
+- Network connectivity to central management server
 
 ### Installation
+
+#### Linux (Debian/Ubuntu)
 ```bash
-# Linux (Debian/Ubuntu)
-curl -sSL https://install.sentinelshield.io/linux | sudo bash
-
-# Windows (PowerShell)
-iwr -useb https://install.sentinelshield.io/win | iex
-
-# macOS (Homebrew)
-brew tap FENTINEL/tap
-brew install FENTINEL
-```
-# Cross-Platform DLP Deployment Guide
-
-## Prerequisites
-
-### All Platforms
-- Python 3.8+ or compiled binary
-- Administrative/root privileges
-- Network connectivity to central management server
-- SSL/TLS certificates for secure communication
-
-## Linux Deployment
-
-### 1. Package Creation
-
-#### DEB Package (Debian/Ubuntu)
-```bash
-# Directory structure
-dlp-agent/
-├── DEBIAN/
-│   ├── control
-│   ├── postinst
-│   ├── prerm
-│   └── conffiles
-├── etc/
-│   ├── dlp/
-│   │   └── agent.conf
-│   └── systemd/system/
-│       └── dlp-agent.service
-├── usr/
-│   ├── bin/
-│   │   └── dlp-agent
-│   └── lib/
-│       └── dlp/
-│           ├── ebpf_programs/
-│           └── modules/
-└── var/
-    └── dlp/
-        ├── logs/
-        └── quarantine/
-
-# control file
-Package: dlp-agent
-Version: 1.0.0
-Architecture: amd64
-Maintainer: Security Team <security@company.com>
-Depends: python3 (>= 3.8), libssl1.1, libpcap0.8
-Description: Cross-platform DLP Agent
- Data Loss Prevention agent for Linux systems
-
-# Build package
-dpkg-deb --build dlp-agent dlp-agent_1.0.0_amd64.deb
-```
-
-#### RPM Package (RHEL/CentOS/Fedora)
-```bash
-# dlp-agent.spec
-Name:           dlp-agent
-Version:        1.0.0
-Release:        1%{?dist}
-Summary:        Cross-platform DLP Agent
-License:        Proprietary
-URL:            https://company.com
-
-Requires:       python3 >= 3.8
-Requires:       openssl-libs
-Requires:       libpcap
-
-%description
-Data Loss Prevention agent for Linux systems
-
-%install
-mkdir -p %{buildroot}/usr/bin
-mkdir -p %{buildroot}/etc/dlp
-mkdir -p %{buildroot}/usr/lib/systemd/system
-cp dlp-agent %{buildroot}/usr/bin/
-cp config/* %{buildroot}/etc/dlp/
-cp systemd/* %{buildroot}/usr/lib/systemd/system/
-
-%files
-/usr/bin/dlp-agent
-/etc/dlp/*
-/usr/lib/systemd/system/dlp-agent.service
-
-%post
-systemctl daemon-reload
-systemctl enable dlp-agent
-systemctl start dlp-agent
-
-# Build package
-rpmbuild -bb dlp-agent.spec
-```
-
-### 2. Installation Steps
-
-```bash
-# Debian/Ubuntu
-sudo dpkg -i dlp-agent_1.0.0_amd64.deb
-sudo apt-get install -f  # Fix dependencies if needed
-
-# RHEL/CentOS
-sudo rpm -ivh dlp-agent-1.0.0-1.el8.x86_64.rpm
+# Add repository and install
+curl -sSL https://dl.fentineldlp.io/install.sh | sudo bash -s -- linux
+sudo apt install fentinel-agent
 
 # Configure agent
-sudo nano /etc/dlp/agent.conf
-# Set CENTRAL_SERVER, certificates, etc.
-
-# Enable eBPF (if using)
-sudo modprobe bpf
-sudo sysctl -w kernel.unprivileged_bpf_disabled=0
-
-# Start service
-sudo systemctl start dlp-agent
-sudo systemctl status dlp-agent
+sudo fentinel configure --server central.fentineldlp.io --token YOUR_ENROLLMENT_TOKEN
 ```
 
-### 3. Kernel Requirements
-- eBPF support (kernel 4.4+, recommended 5.0+)
-- Netfilter modules loaded
-- SELinux/AppArmor policies configured
-
-## Windows Deployment
-
-### 1. MSI Package Creation
-
+#### Windows
 ```powershell
-# Directory structure
-DLPAgent/
-├── Program Files/
-│   └── DLPAgent/
-│       ├── DLPAgent.exe
-│       ├── DLPService.exe
-│       ├── Config/
-│       └── Drivers/
-│           └── DLPFilter.sys
-├── ProgramData/
-│   └── DLP/
-│       ├── Logs/
-│       └── Quarantine/
-└── Windows/
-    └── System32/
-        └── drivers/
-            └── DLPFilter.sys
-
-# WiX installer script (Product.wxs)
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="DLP Agent" Language="1033" 
-           Version="1.0.0.0" Manufacturer="YourCompany">
-    
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    
-    <Feature Id="ProductFeature" Title="DLP Agent" Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
-      <ComponentRef Id="ServiceComponent" />
-      <ComponentRef Id="DriverComponent" />
-    </Feature>
-    
-    <!-- Service Installation -->
-    <Component Id="ServiceComponent" Guid="YOUR-GUID-HERE">
-      <File Source="DLPService.exe" />
-      <ServiceInstall Id="DLPService"
-                      Name="DLPAgent"
-                      DisplayName="DLP Agent Service"
-                      Type="ownProcess"
-                      Start="auto"
-                      ErrorControl="normal" />
-      <ServiceControl Id="StartService"
-                      Start="install"
-                      Stop="both"
-                      Remove="uninstall"
-                      Name="DLPAgent" />
-    </Component>
-    
-    <!-- WFP Driver Installation -->
-    <Component Id="DriverComponent" Guid="YOUR-GUID-HERE">
-      <File Source="DLPFilter.sys" />
-      <DriverInstall Legacy="yes"
-                     ForceInstall="yes"
-                     Sequence="1" />
-    </Component>
-  </Product>
-</Wix>
-
-# Build MSI
-candle Product.wxs
-light Product.wixobj -o DLPAgent.msi
-```
-
-### 2. Installation Steps
-
-```powershell
-# Run as Administrator
-
-# Install MSI
-msiexec /i DLPAgent.msi /quiet /norestart
-
-# Or using PowerShell
-Start-Process msiexec.exe -ArgumentList '/i', 'DLPAgent.msi', '/quiet' -Wait
+# Run PowerShell as Administrator
+Set-ExecutionPolicy Bypass -Scope Process -Force
+iex ((New-Object System.Net.WebClient).DownloadString('https://dl.fentineldlp.io/install.ps1'))
 
 # Configure agent
-notepad C:\ProgramData\DLP\Config\agent.conf
-
-# Install and start WFP driver
-sc create DLPFilter type= kernel binPath= C:\Windows\System32\drivers\DLPFilter.sys
-sc start DLPFilter
-
-# Verify service
-Get-Service DLPAgent
-Get-NetFirewallFilter | Where-Object {$_.DisplayName -like "*DLP*"}
+fentinel configure --server central.fentineldlp.io --token YOUR_ENROLLMENT_TOKEN
 ```
 
-### 3. Requirements
-- Windows 10/11 or Server 2016+
-- .NET Framework 4.7.2+
-- Windows Filtering Platform (WFP)
-- ETW permissions
-
-## macOS Deployment
-
-### 1. PKG Package Creation
-
+#### macOS
 ```bash
-# Directory structure
-DLPAgent/
-├── Applications/
-│   └── DLPAgent.app/
-│       └── Contents/
-│           ├── MacOS/
-│           │   └── DLPAgent
-│           ├── Info.plist
-│           └── Resources/
-├── Library/
-│   ├── LaunchDaemons/
-│   │   └── com.company.dlpagent.plist
-│   └── Application Support/
-│       └── DLP/
-│           ├── Config/
-│           └── Quarantine/
-└── System/
-    └── Library/
-        └── Extensions/
-            └── DLPNetworkExtension.kext/
+# Install via Homebrew
+brew tap fentineldlp/tap
+brew install fentinel-agent
 
-# Create package
-pkgbuild --root ./DLPAgent \
-         --identifier com.company.dlpagent \
-         --version 1.0.0 \
-         --scripts ./scripts \
-         DLPAgent.pkg
-
-# Create product archive with requirements
-productbuild --distribution distribution.xml \
-             --resources ./resources \
-             --package-path . \
-             DLPAgent-Installer.pkg
-
-# Sign package
-productsign --sign "Developer ID Installer: YourCompany" \
-            DLPAgent-Installer.pkg \
-            DLPAgent-Installer-Signed.pkg
+# Configure agent
+sudo fentinel configure --server central.fentineldlp.io --token YOUR_ENROLLMENT_TOKEN
 ```
 
-### 2. Installation Steps
+## 🏎️ Quick Start Guide
 
-```bash
-# Install package
-sudo installer -pkg DLPAgent-Installer-Signed.pkg -target /
-
-# Grant necessary permissions
-# System Preferences → Security & Privacy → Privacy
-# Enable for DLPAgent:
-# - Full Disk Access
-# - Network Filtering
-# - Endpoint Security
-
-# Load launch daemon
-sudo launchctl load /Library/LaunchDaemons/com.company.dlpagent.plist
-
-# Verify
-sudo launchctl list | grep dlpagent
-ps aux | grep DLPAgent
-```
-
-### 3. Requirements
-- macOS 10.15+ (Catalina or later)
-- System Extension entitlements
-- Notarization by Apple
-- MDM deployment recommended
-
-## Post-Installation Configuration
-
-### 1. Central Server Registration
-```bash
-# All platforms - Register agent
-dlp-agent register \
-  --server https://dlp-central.company.com \
-  --token <enrollment-token> \
-  --cert /path/to/client.crt
-```
-
-### 2. Policy Synchronization
-```bash
-# Force initial policy download
-dlp-agent sync-policies
-
-# Verify policies
-dlp-agent list-policies
-```
-
-### 3. Testing Installation
-```bash
-# Run self-test
-dlp-agent test --comprehensive
-
-# Test specific components
-dlp-agent test --network-intercept
-dlp-agent test --file-monitor
-dlp-agent test --policy-engine
-```
-
-## Automated Deployment
-
-### Using Configuration Management
-
-#### Ansible Playbook
+1. **Create a Policy** (`policy.yaml`):
 ```yaml
----
-- name: Deploy DLP Agent
-  hosts: all
-  become: yes
-  
-  tasks:
-    - name: Install DLP Agent Package
-      package:
-        name: "{{ dlp_package_url }}"
-        state: present
-      
-    - name: Configure DLP Agent
-      template:
-        src: agent.conf.j2
-        dest: /etc/dlp/agent.conf
-        mode: '0600'
-    
-    - name: Start DLP Service
-      service:
-        name: dlp-agent
-        state: started
-        enabled: yes
-```
-
-#### PowerShell DSC (Windows)
-```powershell
-Configuration DLPAgentConfig {
-    Import-DscResource -ModuleName PSDesiredStateConfiguration
-    
-    Node $AllNodes.NodeName {
-        Package DLPAgent {
-            Name = "DLP Agent"
-            Path = "\\fileserver\share\DLPAgent.msi"
-            ProductId = "YOUR-PRODUCT-GUID"
-            Ensure = "Present"
-        }
-        
-        Service DLPService {
-            Name = "DLPAgent"
-            StartupType = "Automatic"
-            State = "Running"
-            DependsOn = "[Package]DLPAgent"
-        }
-    }
-}
-```
-
-## Monitoring and Maintenance
-
-### Health Checks
-```bash
-# Check agent status
-systemctl status dlp-agent           # Linux
-Get-Service DLPAgent                 # Windows
-sudo launchctl list | grep dlp      # macOS
-
-# View logs
-tail -f /var/log/dlp/agent.log      # Linux
-Get-Content C:\ProgramData\DLP\Logs\agent.log -Tail 50 -Wait  # Windows
-log stream --predicate 'subsystem == "com.company.dlpagent"'   # macOS
-```
-
-### Updates
-```bash
-# Check for updates
-dlp-agent check-update
-
-# Apply updates (requires restart)
-dlp-agent update --auto-restart
-```
-### Sample Policy
-Create `policy.yaml`:
-```yaml
+version: 1.0
 policies:
   - id: PCI_PROTECTION
     name: "Block Credit Card Data"
     description: "Prevent PCI data exfiltration"
     triggers:
       - type: network
-        protocol: [http, https, smtp]
+        protocols: [http, https, smtp]
         pattern: "\b(?:\d[ -]*?){13,16}\b"
       - type: file
         extensions: [txt, doc, pdf, xlsx]
@@ -481,29 +152,113 @@ policies:
       alert: critical
 ```
 
-### Start Protection
+2. **Apply Policy**:
 ```bash
-sentinelctl start --policy policy.yaml
+fentinel policy apply policy.yaml
 ```
 
-## 🛠️ Key Capabilities
+3. **Test Protection**:
+```bash
+# Attempt to create file with credit card
+echo "Credit Card: 4111-1111-1111-1111" > test.txt
 
-### Data Monitoring Matrix
-| Data Type | Linux | Windows | macOS |
-|-----------|-------|---------|-------|
-| **Network Traffic** | ✅ nftables | ✅ WFP | ✅ Network Extensions |
-| **File Operations** | ✅ inotify | ✅ Minifilter | ✅ FSEvents |
-| **Process Activity** | ✅ eBPF | ✅ ETW | ✅ EndpointSecurity |
-| **Print/Clipboard** | ✅ CUPS | ✅ PrintMonitor | ✅ Pasteboard |
+# Verify file was quarantined
+fentinel quarantine list
+```
 
-### Detection Methods
-- **Regex Patterns** (SSN, PCI, API keys)
-- **Machine Learning** (unstructured data)
-- **File Fingerprinting**
-- **Contextual Analysis** (user roles, location)
-- **Custom Plugins**
+4. **View Incidents**:
+```bash
+fentinel incidents list
+```
 
-## 📊 Dashboard Preview
+## 📋 Policy Management
+
+FENTINEL policies use YAML format with flexible matching rules:
+
+```yaml
+policies:
+  - id: GDPR_PII_PROTECTION
+    name: "GDPR Personal Data Protection"
+    description: "Protect personally identifiable information"
+    scope:
+      users: ["*"]
+      devices: ["laptops", "desktops"]
+      locations: ["off-premises"]
+    triggers:
+      - type: any
+        detectors:
+          - name: regex
+            pattern: "\b[0-9]{3}-[0-9]{2}-[0-9]{4}\b" # SSN
+            confidence: high
+          - name: ml-classifier
+            model: gdpr-pii-v3
+            threshold: 0.85
+    actions:
+      default: block
+      exceptions:
+        - application: "HR-System"
+          action: allow
+    compliance:
+      frameworks: ["GDPR", "CCPA"]
+```
+
+### Policy Components:
+1. **Scope**: Define where the policy applies
+2. **Triggers**: Conditions that activate the policy
+3. **Detectors**: Multiple detection methods
+4. **Actions**: Response when policy is triggered
+5. **Exceptions**: Allow specific scenarios
+6. **Compliance**: Map to regulatory frameworks
+
+## 🕵️‍♂️ Detection Capabilities
+
+### Content Detection Methods
+
+| Method | Best For | Performance | Accuracy |
+|--------|----------|-------------|----------|
+| **Regex Patterns** | Structured data (CC#, SSN) | ⚡⚡⚡⚡⚡ | Medium |
+| **Machine Learning** | Unstructured text, documents | ⚡⚡⚡ | High |
+| **File Fingerprinting** | Exact document matching | ⚡⚡⚡⚡ | Very High |
+| **Metadata Analysis** | Contextual classification | ⚡⚡⚡⚡⚡ | Medium |
+| **Custom Plugins** | Proprietary formats | Varies | Varies |
+
+### Contextual Awareness
+FENTINEL enhances detection accuracy with contextual factors:
+- User role and permissions
+- Geographic location
+- Network context (corporate vs. public)
+- Device security posture
+- Time of access
+
+## 🛡️ Response Actions
+
+When a policy violation is detected, FENTINEL can execute multiple response actions:
+
+1. **Block**: Prevent the action in real-time
+2. **Encrypt**: Automatically encrypt sensitive data
+3. **Quarantine**: Move files to secure storage
+4. **Alert**: Notify security teams via multiple channels
+5. **Log**: Detailed forensic record for investigation
+6. **Custom**: Execute user-defined scripts
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Agent
+    participant Policy Engine
+    
+    User->>Agent: Attempt to email document
+    Agent->>Policy Engine: Check policy (document content)
+    Policy Engine-->>Agent: Violation detected
+    Agent->>Agent: Block email transmission
+    Agent->>Agent: Quarantine document
+    Agent->>Policy Engine: Log incident
+    Policy Engine-->>Dashboard: Create alert
+```
+
+## 📊 Dashboard & Monitoring
+
+FENTINEL provides a comprehensive dashboard for security operations:
 
 ```bash
 ███████╗███████╗███╗   ██╗████████╗██╗███╗   ██╗███████╗██╗     
@@ -520,52 +275,123 @@ sentinelctl start --policy policy.yaml
 RECENT INCIDENTS:
 2023-07-05 14:23:18 | BLOCKED | PCI_BLOCK | user@macbook | Credit card in email attachment
 2023-07-05 13:47:12 | QUARANTINED | CONFIDENTIAL_DOCS | user@win-pc | Source code in cloud sync
+
+TOP RISK USERS:
+1. jsmith@company.com (Risk Score: 87)
+2. rjohnson@company.com (Risk Score: 72)
+3. mdavis@company.com (Risk Score: 65)
+
+DATA DISTRIBUTION:
+PCI: 142 files
+PII: 387 files
+IP: 1,243 files
 ```
 
-## 🌐 Architecture Overview
+### Dashboard Features:
+- Real-time incident monitoring
+- Risk scoring and user behavior analytics
+- Compliance reporting (GDPR, HIPAA, PCI-DSS)
+- Customizable dashboards
+- SIEM integration (Splunk, ELK, QRadar)
+- Audit trail for all actions
+
+## 🌐 Deployment Scenarios
+
+### Enterprise Deployment
 ```mermaid
-graph TD
-    A[Endpoint Agent] -->|Events| B(Policy Engine)
-    B --> C{Detection Engine}
-    C -->|Match| D[Response Module]
-    D --> E[Block Network]
-    D --> F[Encrypt File]
-    D --> G[Quarantine]
-    D --> H[Send Alert]
-    B --> I[Central Dashboard]
-    I --> J[SIEM Systems]
-    I --> K[Audit Reports]
+graph LR
+    A[Headquarters] --> B[Central Server]
+    C[Branch Office 1] --> B
+    D[Branch Office 2] --> B
+    E[Cloud Workloads] --> B
+    B --> F[SIEM Integration]
+    B --> G[Compliance Reporting]
 ```
 
-## 🧪 Testing Scenarios
-1. **Linux Test**:  
-   `echo "Credit Card: 4111-1111-1111-1111" > test.txt`  
-   *Expected: File quarantined and alert triggered*
-
-2. **Windows Test**:  
-   Try emailing `SSN: 123-45-6789` via Outlook  
-   *Expected: Email blocked*
-
-3. **macOS Test**:  
-   Copy sensitive data to external USB  
-   *Expected: Operation blocked with admin alert*
+### Technical Requirements
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| **Agent CPU** | 1 core | 2 cores |
+| **Agent RAM** | 50 MB | 100 MB |
+| **Server CPU** | 4 cores | 16 cores |
+| **Server RAM** | 8 GB | 64 GB |
+| **Storage** | 100 GB | 1 TB+ SSD |
+| **Network** | 1 Gbps | 10 Gbps |
 
 ## 🤝 Contributing
-We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md) and:
-```bash
-# Setup dev environment
-git clone https://github.com/sarat1kyan/FENTINEL.git
-cd FENTINEL
-pip install -r requirements-dev.txt
 
-# Build agents
-make build-all
-```
+We welcome contributions from the security community! Here's how to get involved:
+
+1. **Report Issues**: 
+   [Create a new issue](https://github.com/sarat1kyan/FENTINEL/issues) for bugs or feature requests
+
+2. **Submit Pull Requests**:
+   ```bash
+   # Fork repository
+   git clone https://github.com/your-username/FENTINEL.git
+   cd FENTINEL
+   
+   # Create feature branch
+   git checkout -b feature/new-detector
+   
+   # Install dev dependencies
+   pip install -r requirements-dev.txt
+   
+   # Make changes and test
+   pytest tests/
+   
+   # Commit and push
+   git commit -m "feat: Add new detector for custom data type"
+   git push origin feature/new-detector
+   
+   # Create pull request
+   ```
+
+3. **Development Guidelines**:
+   - Follow PEP 8 style guide
+   - Write unit tests for new features
+   - Document public interfaces
+   - Maintain backward compatibility
+   - Use semantic versioning
 
 ## 📜 License
-FENTINEL is released under the [MIT License](LICENSE). Enterprise support and advanced features available.
+
+FENTINEL is released under the **GNU General Public License v3.0**.
+
+```text
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+```
+
+For commercial licensing options, please contact [licensing@fentineldlp.io](mailto:licensing@fentineldlp.io).
+
+## 🙏 Acknowledgments
+
+FENTINEL stands on the shoulders of giants in the open-source community:
+
+- **eBPF Project** for Linux kernel instrumentation
+- **Microsoft ETW Team** for Windows event tracing
+- **Apple Endpoint Security** for macOS protection
+- **TensorFlow** for machine learning capabilities
+- **Elasticsearch** for search and analytics
+
+Special thanks to our contributors and early adopters who helped shape FENTINEL into a robust DLP solution.
 
 ---
-**Protect what matters.** Deploy FENTINEL in under 5 minutes and gain enterprise-grade DLP protection across your entire organization.  
 
-[📚 Documentation](https://docs.sentinelshield.io) | [📦 Download](https://github.com/sarat1kyan/releases) | [🐛 Report Issue](https://github.com/sarat1kyan/issues)
+**Ready to secure your data?** Get started with FENTINEL in under 5 minutes and gain enterprise-grade protection across your entire organization.
+
+[📚 Documentation](https://docs.fentineldlp.io) | 
+[📦 Download](https://github.com/sarat1kyan/FENTINEL/releases) | 
+[🐛 Report Issue](https://github.com/sarat1kyan/FENTINEL/issues) |
+[💬 Discuss](https://github.com/sarat1kyan/FENTINEL/discussions)
